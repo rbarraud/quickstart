@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+ * Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
  * contributors by the @authors tag. See the copyright.txt in the
  * distribution for a full listing of individual contributors.
  *
@@ -23,7 +23,7 @@ import javax.ejb.Local;
 import org.jboss.as.quickstarts.wicketEar.ejbjar.model.Contact;
 
 /**
- * 
+ *
  * @author Filippo Diotalevi
  */
 @Local
@@ -31,32 +31,32 @@ public interface ContactDao {
 
     /**
      * Returns the currently available contacts
-     * 
+     *
      * @return every contact in the database
      */
-    public List<Contact> getContacts();
+    List<Contact> getContacts();
 
     /**
      * Returns a specific Contact from DB
-     * 
+     *
      * @param id The Id for the Contact
      * @return The specified Contact object
      */
-    public Contact getContact(Long id);
+    Contact getContact(Long id);
 
     /**
      * Persist a new Contact in the DB
-     * 
+     *
      * @param name The name of the new Contact
      * @param email The e-mail address of the new Contact
      */
-    public void addContact(String name, String email);
+    void addContact(String name, String email);
 
     /**
      * Removes a specific item from the DB
-     * 
-     * @param modelObject The specific Contact object, which we wants to remove
+     *
+     * @param id of the specific Contact object, which we wants to remove
      */
-    public void remove(Contact modelObject);
+    void remove(Long id);
 
 }

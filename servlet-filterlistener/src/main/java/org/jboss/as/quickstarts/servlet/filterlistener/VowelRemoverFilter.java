@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+ * Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
  * contributors by the @authors tag. See the copyright.txt in the
  * distribution for a full listing of individual contributors.
  *
@@ -38,7 +38,7 @@ import javax.servlet.http.HttpSession;
 /**
  * A silly Servlet Filter that removes the letters a, e, i, o, and u (but not <a
  * href="http://oxforddictionaries.com/page/200">sometimes y</a>) from all request parameter values. To achieve this, a wrapper
- * is placed around the request object. This wrapper returns a different set of parameters than those that the WildFly
+ * is placed around the request object. This wrapper returns a different set of parameters than those that the JBoss EAP
  * container parsed from the original HTTP request.
  * <p>
  * This is just one simple example of what you can do with a filter. In real life, you will find filters useful for these kinds
@@ -55,7 +55,7 @@ import javax.servlet.http.HttpSession;
  * <p>
  * Note that this application also employs a {@linkplain ParameterDumpingRequestListener Request Listener}, which will see all
  * requests before this Filter sees them.
- * 
+ *
  * @author Jonathan Fuerth <jfuerth@redhat.com>
  */
 @WebFilter("/*")
@@ -70,13 +70,13 @@ public class VowelRemoverFilter implements Filter {
         // in the destroy() call.
         servletContext = filterConfig.getServletContext();
 
-        // To see this log message at run time, check out the terminal window where you started WildFly.
+        // To see this log message at run time, check out the terminal window where you started JBoss EAP.
         servletContext.log("VowelRemoverFilter initialized");
     }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
-            ServletException {
+        ServletException {
 
         final Map<String, String[]> filteredParams = Collections.unmodifiableMap(removeVowels(request.getParameterMap()));
 
@@ -132,12 +132,12 @@ public class VowelRemoverFilter implements Filter {
 
     /**
      * Performs the vowel removal work of this filter.
-     * 
+     *
      * @param parameterMap the map of parameter names and values in the original request.
      * @return A copy of the original map with all the same keys, but whose values do not contain vowels.
      */
     private Map<String, String[]> removeVowels(Map<String, String[]> parameterMap) {
-        Map<String, String[]> m = new HashMap<String, String[]>();
+        Map<String, String[]> m = new HashMap<>();
         for (Map.Entry<String, String[]> entry : parameterMap.entrySet()) {
             String[] orig = entry.getValue();
             String[] vowelless = new String[orig.length];

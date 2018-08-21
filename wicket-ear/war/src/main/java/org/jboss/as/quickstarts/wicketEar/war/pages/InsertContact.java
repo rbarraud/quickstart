@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+ * Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
  * contributors by the @authors tag. See the copyright.txt in the
  * distribution for a full listing of individual contributors.
  *
@@ -27,7 +27,7 @@ import org.jboss.as.quickstarts.wicketEar.ejbjar.dao.ContactDao;
 import org.jboss.as.quickstarts.wicketEar.ejbjar.model.Contact;
 
 /**
- * 
+ *
  * @author Filippo Diotalevi
  */
 @SuppressWarnings("serial")
@@ -52,8 +52,8 @@ public class InsertContact extends WebPage {
             }
         };
 
-        insertForm.add(new RequiredTextField<String>("name", new PropertyModel<String>(this, "name")));
-        insertForm.add(new RequiredTextField<String>("email", new PropertyModel<String>(this, "email")));
+        insertForm.add(new RequiredTextField<>("name", new PropertyModel<String>(this, "name")));
+        insertForm.add(new RequiredTextField<>("email", new PropertyModel<String>(this, "email")));
         add(insertForm);
     }
 

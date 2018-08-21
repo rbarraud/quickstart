@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+ * Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
  * contributors by the @authors tag. See the copyright.txt in the
  * distribution for a full listing of individual contributors.
  *
@@ -16,14 +16,14 @@
  */
 package org.jboss.as.quickstart.hibernate4.service;
 
-import org.jboss.as.quickstart.hibernate4.model.Member;
-
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import java.util.logging.Logger;
+
 import org.hibernate.Session;
+import org.jboss.as.quickstart.hibernate4.model.Member;
 
 // The @Stateless annotation eliminates the need for manual transaction demarcation
 @Stateless

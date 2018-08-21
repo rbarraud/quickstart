@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+ * Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
  * contributors by the @authors tag. See the copyright.txt in the
  * distribution for a full listing of individual contributors.
  *
@@ -27,19 +27,20 @@ import javax.jms.TextMessage;
 
 /**
  * <p>
- * A simple Message Driven Bean that asynchronously receives and processes the messages that are sent to the queue.
+ * A simple Message Driven Bean that asynchronously receives and processes the
+ * messages that are sent to the queue.
  * </p>
- * 
+ *
  * @author Serge Pagop (spagop@redhat.com)
- * 
+ *
  */
 @MessageDriven(name = "HelloWorldMDB", activationConfig = {
-        @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
-        @ActivationConfigProperty(propertyName = "destination", propertyValue = "queue/jts-quickstart"),
-        @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge") })
+    @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Queue"),
+    @ActivationConfigProperty(propertyName = "destination", propertyValue = "queue/jts-quickstart"),
+    @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge") })
 public class HelloWorldMDB implements MessageListener {
 
-    private final static Logger LOGGER = Logger.getLogger(HelloWorldMDB.class.toString());
+    private static final Logger LOGGER = Logger.getLogger(HelloWorldMDB.class.toString());
 
     /**
      * @see MessageListener#onMessage(Message)

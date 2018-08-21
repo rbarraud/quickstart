@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+ * Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
  * contributors by the @authors tag. See the copyright.txt in the
  * distribution for a full listing of individual contributors.
  *
@@ -20,15 +20,15 @@ import javax.ejb.Local;
 
 /**
  * Bar is provided in a shared API jar, that can be referenced by any application wishing to.
- * 
+ *
  * @author Pete Muir
  *
  */
 @Local
 public interface Foo {
 
-    public void setName(String name);
+    void setName(String name);
 
-    public String getName();
-    
+    String getName();
+
 }

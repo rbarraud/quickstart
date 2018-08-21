@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+ * Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
  * contributors by the @authors tag. See the copyright.txt in the
  * distribution for a full listing of individual contributors.
  *
@@ -25,55 +25,35 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 
 import org.jboss.as.quickstarts.ejb.multi.server.app.MainApp;
-import org.jboss.ejb.client.ContextSelector;
-import org.jboss.ejb.client.EJBClientConfiguration;
-import org.jboss.ejb.client.EJBClientContext;
-import org.jboss.ejb.client.PropertiesBasedEJBClientConfiguration;
-import org.jboss.ejb.client.remoting.ConfigBasedEJBClientContextSelector;
 
 /**
  * <p>
  * A simple standalone application which uses the JBoss API to invoke the MainApp demonstration Bean.
  * </p>
- * <p>
- * With the boolean property <i>UseScopedContext</i> the basic example or the example with the scoped-environment will be called.
- * </p>
- * 
+ *
  * @author <a href="mailto:wfink@redhat.com">Wolf-Dieter Fink</a>
  */
 public class Client {
 
     /**
      * @param args no args needed
-     * @throws Exception 
+     * @throws Exception
      */
     public static void main(String[] args) throws Exception {
         // suppress output of client messages
-        Logger.getLogger("org.jboss").setLevel(Level.FINEST);
-        Logger.getLogger("org.xnio").setLevel(Level.FINEST);
-        
+        Logger.getLogger("org.jboss").setLevel(Level.OFF);
+        Logger.getLogger("org.xnio").setLevel(Level.OFF);
+
         Properties p = new Properties();
-        p.put("remote.connectionprovider.create.options.org.xnio.Options.SSL_ENABLED", "false");
-        p.put("remote.connections", "one");
-        p.put("remote.connection.one.port", "8080");
-        p.put("remote.connection.one.host", "localhost");
-        p.put("remote.connection.one.username", "quickuser");
-        p.put("remote.connection.one.password", "quick-123");
+        p.put(Context.INITIAL_CONTEXT_FACTORY, "org.wildfly.naming.client.WildFlyInitialContextFactory");
+        p.put(Context.PROVIDER_URL, "remote+http://localhost:8080");
+        InitialContext context = new InitialContext(p);
 
-        EJBClientConfiguration cc = new PropertiesBasedEJBClientConfiguration(p);
-        ContextSelector<EJBClientContext> selector = new ConfigBasedEJBClientContextSelector(cc);
-        EJBClientContext.setSelector(selector);
-
-        Properties props = new Properties();
-        props.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
-        InitialContext context = new InitialContext(props);
-
-        final boolean useScopedExample = Boolean.getBoolean("UseScopedContext");
-        final String rcal = "ejb:jboss-ejb-multi-server-app-main/ejb//" + (useScopedExample ? "MainAppSContextBean" : "MainAppBean") + "!" + MainApp.class.getName();
+        final String rcal = "ejb:ejb-multi-server-app-main/ejb//MainAppBean!" + MainApp.class.getName();
         final MainApp remote = (MainApp) context.lookup(rcal);
-        final String result = remote.invokeAll("Client call at "+new Date());
+        final String result = remote.invokeAll("Client call at " + new Date());
 
-        System.out.println("InvokeAll succeed: "+result);
+        System.out.println("InvokeAll succeed: " + result);
     }
 
 }

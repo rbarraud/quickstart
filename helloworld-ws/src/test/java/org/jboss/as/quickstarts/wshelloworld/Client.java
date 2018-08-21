@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+ * Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
  * contributors by the @authors tag. See the copyright.txt in the
  * distribution for a full listing of individual contributors.
  *
@@ -16,8 +16,6 @@
  */
 package org.jboss.as.quickstarts.wshelloworld;
 
-import org.jboss.as.quickstarts.wshelloworld.HelloWorldService;
-
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 import java.net.MalformedURLException;
@@ -26,7 +24,7 @@ import java.util.List;
 
 /**
  * A Client stub to the HelloWorld JAX-WS Web Service.
- * 
+ *
  * @author lnewson@redhat.com
  */
 public class Client implements HelloWorldService {
@@ -34,20 +32,20 @@ public class Client implements HelloWorldService {
 
     /**
      * Default constructor
-     * 
+     *
      * @param url The URL to the Hello World WSDL endpoint.
      */
     public Client(final URL wsdlUrl) {
-        QName serviceName = new QName("http://www.jboss.org/jbossas/quickstarts/wshelloworld/HelloWorld", "HelloWorldService");
+        QName serviceName = new QName("http://www.jboss.org/eap/quickstarts/wshelloworld/HelloWorld", "HelloWorldService");
 
         Service service = Service.create(wsdlUrl, serviceName);
         helloWorldService = service.getPort(HelloWorldService.class);
         assert (helloWorldService != null);
     }
-    
+
     /**
      * Default constructor
-     * 
+     *
      * @param url The URL to the Hello World WSDL endpoint.
      * @throws MalformedURLException if the WSDL url is malformed.
      */

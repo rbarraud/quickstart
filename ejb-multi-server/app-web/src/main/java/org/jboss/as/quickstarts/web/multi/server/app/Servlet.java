@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+ * Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
  * contributors by the @authors tag. See the copyright.txt in the
  * distribution for a full listing of individual contributors.
  *
@@ -35,7 +35,7 @@ import org.jboss.as.quickstarts.ejb.multi.server.app.AppTwo;
 
 /**
  * A simple servlet that is used to invoke all other application EJB's.
- * 
+ *
  * @author <a href="mailto:wfink@redhat.com">Wolf-Dieter Fink</a>
  */
 @WebServlet(urlPatterns = "/*")
@@ -59,7 +59,7 @@ public class Servlet extends HttpServlet {
             write(response, "<h2>Invoke AppOne on different server</h2>");
             try {
                 AppOne proxy = (AppOne) lookup(response, iCtx,
-                    "ejb:jboss-ejb-multi-server-app-one/ejb//AppOneBean!org.jboss.as.quickstarts.ejb.multi.server.app.AppOne");
+                    "ejb:ejb-multi-server-app-one/ejb//AppOneBean!org.jboss.as.quickstarts.ejb.multi.server.app.AppOne");
                 if (proxy != null) {
                     write(response, "Invocation #1 return node.name => " + proxy.getJBossNodeName() + "<br/>");
                     // second invocation shows whether the same or a different node is reached
@@ -76,7 +76,7 @@ public class Servlet extends HttpServlet {
             write(response, "<h2>Invoke AppTwo on different server</h2>");
             try {
                 AppTwo proxy = (AppTwo) lookup(response, iCtx,
-                    "ejb:jboss-ejb-multi-server-app-two/ejb//AppTwoBean!org.jboss.as.quickstarts.ejb.multi.server.app.AppTwo");
+                    "ejb:ejb-multi-server-app-two/ejb//AppTwoBean!org.jboss.as.quickstarts.ejb.multi.server.app.AppTwo");
                 if (proxy != null) {
                     write(response, "Invocation #1 return node.name => " + proxy.getJBossNodeName() + "<br/>");
                     // second invocation shows whether the same or a different node is reached
@@ -97,7 +97,7 @@ public class Servlet extends HttpServlet {
 
         if (fail) {
             write(response,
-                "<br/><br/><br/><p><b><i>Not all invocations are successful, see JBOSS_HOME/domain/servers/app-web/log/server.log</i></b></p>");
+                "<br/><br/><br/><p><b><i>Not all invocations are successful, see <i>EAP_HOME</i>/domain/servers/app-web/log/server.log</i></b></p>");
         } else {
             write(response, "<br/><br/><br/><p><i>All invocations are successful</i></p>");
         }
@@ -114,7 +114,7 @@ public class Servlet extends HttpServlet {
     }
 
     private static InitialContext getContext() throws NamingException {
-        final Hashtable<String, String> jndiProperties = new Hashtable<String, String>();
+        final Hashtable<String, String> jndiProperties = new Hashtable<>();
         jndiProperties.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
         return new InitialContext(jndiProperties);
     }

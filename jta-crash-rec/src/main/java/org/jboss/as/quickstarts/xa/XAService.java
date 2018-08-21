@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+ * Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
  * contributors by the @authors tag. See the copyright.txt in the
  * distribution for a full listing of individual contributors.
  *
@@ -36,12 +36,12 @@ import javax.transaction.UserTransaction;
 
 /**
  * A bean for updating a database and sending a JMS message within a single JTA transaction
- * 
+ *
  * @author Mike Musgrove
  */
 public class XAService {
 
-    private final static Logger LOGGER = Logger.getLogger(XAService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(XAService.class.getName());
 
     /*
      * Ask the container to inject a persistence context corresponding to the database that will hold our key/value pair table.
@@ -113,12 +113,12 @@ public class XAService {
 
     /**
      * Update a key value database. The method must be called within a transaction.
-     * 
+     *
      * @param entityManager an open JPA entity manager
      * @param delete if true then delete rows. If key is empty all rows are deleted.
      * @param key if not null then a pair is inserted into the database
      * @param value the value to be associated with the key
-     * 
+     *
      * @return true if a key was inserted or a value modified
      */
     public boolean modifyKeyValueTable(EntityManager entityManager, boolean delete, String key, String value) {
@@ -141,7 +141,7 @@ public class XAService {
             KVPair pair = entityManager.find(KVPair.class, key);
 
             if (pair == null) {
-                // insert a new entry into the the key/value table
+                // insert a new entry into the key/value table
                 entityManager.persist(new KVPair(key, value));
             } else {
                 // there is already a value for this key - update it with the new value
@@ -161,11 +161,11 @@ public class XAService {
 
     /**
      * Update a key value database. The method must not be called within a transaction.
-     * 
+     *
      * @param delete if true then delete rows. If key is empty all rows are deleted.
      * @param key if not null then a pair is inserted into the database
      * @param value the value to be associated with the key
-     * 
+     *
      * @return The contents of the table after the update
      */
     public String updateKeyValueDatabase(boolean delete, String key, String value) {
@@ -190,7 +190,7 @@ public class XAService {
         } finally {
             try {
                 if (userTransaction.getStatus() == Status.STATUS_ACTIVE
-                        || userTransaction.getStatus() == Status.STATUS_MARKED_ROLLBACK)
+                    || userTransaction.getStatus() == Status.STATUS_MARKED_ROLLBACK)
                     userTransaction.rollback();
             } catch (Throwable e) {
                 result.append(" Transaction did not finish: ").append(e.getMessage());

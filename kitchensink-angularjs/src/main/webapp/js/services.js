@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+ * Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
  * contributors by the @authors tag. See the copyright.txt in the
  * distribution for a full listing of individual contributors.
  *
@@ -17,5 +17,5 @@
 // Define the REST resource service, allowing us to interact with it as a high level service
 angular.module('membersService', ['ngResource']).
     factory('Members', function($resource){
-  return $resource('rest/members:memberId', {});
+  return $resource('rest/members/:memberId', {});
 });

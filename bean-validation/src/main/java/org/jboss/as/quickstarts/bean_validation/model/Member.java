@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+ * Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
  * contributors by the @authors tag. See the copyright.txt in the
  * distribution for a full listing of individual contributors.
  *
@@ -33,7 +33,7 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
-@Table(name="MEMBER_BEAN_VALIDATION", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
+@Table(name = "MEMBER_BEAN_VALIDATION", uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class Member implements Serializable {
     /** Default value included to remove warning. Remove or modify at will. **/
     private static final long serialVersionUID = 1L;
@@ -48,12 +48,12 @@ public class Member implements Serializable {
     private String name;
 
     @NotNull
-    @NotEmpty
-    @Email
+    @NotEmpty(message = "not a well-formed email address")
+    @Email(message = "not a well-formed email address")
     private String email;
 
     @NotNull
-    @Size(min = 10, max = 12)
+    @Size(min = 10, max = 12, message = "size must be between 10 and 12")
     @Digits(fraction = 0, integer = 12)
     @Column(name = "phone_number")
     private String phoneNumber;

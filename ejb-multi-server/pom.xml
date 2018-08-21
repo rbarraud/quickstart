@@ -1,7 +1,7 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
     JBoss, Home of Professional Open Source
-    Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+    Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
     contributors by the @authors tag. See the copyright.txt in the
     distribution for a full listing of individual contributors.
 
@@ -16,27 +16,34 @@
     limitations under the License.
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
-    <groupId>org.jboss.as.quickstarts</groupId>
-    <artifactId>jboss-ejb-multi-server</artifactId>
-    <version>8.0.0-SNAPSHOT</version>
+    <parent>
+        <groupId>org.wildfly.quickstarts</groupId>
+        <artifactId>quickstart-parent</artifactId>
+        <!--
+        Maintain separation between the artifact id and the version to help prevent
+        merge conflicts between commits changing the GA and those changing the V.
+        -->
+        <version>14.0.0.CR1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+    <artifactId>ejb-multi-server</artifactId>
     <packaging>pom</packaging>
-    <name>JBoss EAP Quickstart: ejb-multi-server</name>
-    <description>ejb-multi-server: An example that demonstrates multiple applications deployed on different servers.
-     This POM defines common properties to specify the used versions and plugins.
-     The subprojects are built in the appropriate sequence.
-  </description>
+    <name>Quickstart: ejb-multi-server</name>
+    <description>A project that demonstrates multiple applications deployed on different servers.
+        This POM defines common properties to specify the used versions and plug-ins.
+        The subprojects are built in the appropriate sequence.
+    </description>
 
-    <url>http://wildfly.org</url>
     <licenses>
         <license>
             <name>Apache License, Version 2.0</name>
-            <distribution>repo</distribution>
             <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+            <distribution>repo</distribution>
         </license>
     </licenses>
+
     <modules>
         <module>app-one</module>
         <module>app-two</module>
@@ -44,83 +51,27 @@
         <module>app-web</module>
         <module>client</module>
     </modules>
-    <properties>
-        <!-- Explicitly declaring the source encoding eliminates the following
-            message: -->
-        <!-- [WARNING] Using platform encoding (UTF-8 actually) to copy filtered
-            resources, i.e. build is platform dependent! -->
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-        <!-- JBoss dependency versions -->
-        <version.wildfly.maven.plugin>1.0.1.Final</version.wildfly.maven.plugin>
-
-        <version.wildfly>8.0.0.Final</version.wildfly>
-        <!-- Alternatively, comment out the above line, and un-comment the
-            line below to use version 7.2.0.Final-redhat-1 which is a release certified
-            to work with JBoss EAP 6. It requires you have access to the JBoss EAP 6
-            maven repository. -->
-        <!-- <version.server>7.2.0.Final-redhat-1</version.server> -->
-
-        <version.jboss.spec.javaee.7.0>1.0.0.Final</version.jboss.spec.javaee.7.0>
-
-        <!-- other plugin versions -->
-        <version.compiler.plugin>3.1</version.compiler.plugin>
-        <version.dependency.plugin>2.1</version.dependency.plugin>
-        <version.ejb.plugin>2.3</version.ejb.plugin>
-        <version.ear.plugin>2.6</version.ear.plugin>
-        <version.war.plugin>2.2</version.war.plugin>
-        <version.exec.plugin>1.2.1</version.exec.plugin>
-
-        <!-- maven-compiler-plugin -->
-        <maven.compiler.target>1.7</maven.compiler.target>
-        <maven.compiler.source>1.7</maven.compiler.source>
-    </properties>
 
     <dependencyManagement>
         <dependencies>
-            <!-- Define the version of JBoss' Java EE 7 APIs we want to use -->
-            <!-- JBoss distributes a complete set of Java EE 7 APIs including
-                a Bill of Materials (BOM). A BOM specifies the versions of a "stack" (or
-                a collection) of artifacts. We use this here so that we always get the correct
-                versions of artifacts. Here we use the jboss-javaee-7.0 stack (you can
-                read this as the JBoss stack of the Java EE 7 APIs). You can actually
-                use this stack with any version of WildFly that implements Java EE 7, not
-                just WildFly 8! -->
             <dependency>
-                <groupId>org.jboss.spec</groupId>
-                <artifactId>jboss-javaee-7.0</artifactId>
-                <version>${version.jboss.spec.javaee.7.0}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.wildfly</groupId>
-                <artifactId>wildfly-ejb-client-bom</artifactId>
-                <version>${version.wildfly}</version>
-                <scope>import</scope>
-                <type>pom</type>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${version.org.slf4j}</version>
+                <scope>provided</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
 
     <build>
         <plugins>
-            <!-- WildFly plugin to deploy apps -->
             <plugin>
                 <groupId>org.wildfly.plugins</groupId>
                 <artifactId>wildfly-maven-plugin</artifactId>
-                <version>${version.wildfly.maven.plugin}</version>
                 <configuration>
                     <skip>true</skip>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>${version.exec.plugin}</version>
-            </plugin>
         </plugins>
     </build>
-
 </project>
-

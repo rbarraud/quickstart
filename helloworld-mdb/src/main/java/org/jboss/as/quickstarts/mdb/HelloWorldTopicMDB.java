@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+ * Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
  * contributors by the @authors tag. See the copyright.txt in the
  * distribution for a full listing of individual contributors.
  *
@@ -28,17 +28,16 @@ import javax.jms.TextMessage;
  * <p>
  * A simple Message Driven Bean that asynchronously receives and processes the messages that are sent to the topic.
  * </p>
- * 
+ *
  * @author Serge Pagop (spagop@redhat.com)
- * 
  */
 @MessageDriven(name = "HelloWorldQTopicMDB", activationConfig = {
         @ActivationConfigProperty(propertyName = "destinationLookup", propertyValue = "topic/HELLOWORLDMDBTopic"),
         @ActivationConfigProperty(propertyName = "destinationType", propertyValue = "javax.jms.Topic"),
-        @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge") })
+        @ActivationConfigProperty(propertyName = "acknowledgeMode", propertyValue = "Auto-acknowledge")})
 public class HelloWorldTopicMDB implements MessageListener {
 
-    private final static Logger LOGGER = Logger.getLogger(HelloWorldTopicMDB.class.toString());
+    private static final Logger LOGGER = Logger.getLogger(HelloWorldTopicMDB.class.toString());
 
     /**
      * @see MessageListener#onMessage(Message)

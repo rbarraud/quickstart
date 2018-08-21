@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+ * Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
  * contributors by the @authors tag. See the copyright.txt in the
  * distribution for a full listing of individual contributors.
  *
@@ -21,6 +21,8 @@ import java.util.Locale;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 import org.jboss.as.quickstarts.loggingToolsQS.exceptions.GreeterExceptionBundle;
 import org.jboss.as.quickstarts.loggingToolsQS.loggers.GreeterLogger;
@@ -37,20 +39,38 @@ import org.jboss.logging.Messages;
 
 @Path("greetings")
 public class GreeterService {
+
+    @SuppressWarnings("unused")
+    private int value;    // used to demonstrate exceptions
+
     // ======================================================================
     // Hello "name"!
     @GET
     @Path("{name}")
-    public String getHelloName(@PathParam("name") String name) {
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getHelloName(@PathParam("name") String name) throws Exception {
+        // ======================================================================
+        // The name "crashme" is a contrived example to demonstrate how to throw
+        // a localized exception with another exception as the cause.
+        if ("crashme".equals(name)) {
+            try {
+                value = 50 / 0;
+            } catch (Exception ex) {
+                throw GreeterExceptionBundle.EXCEPTIONS.thrownOnPurpose(ex);
+            }
+        }
+
         GreeterLogger.LOGGER.logHelloMessageSent();
         return GreetingMessagesBundle.MESSAGES.helloToYou(name);
+
     }
 
     // ======================================================================
     // Hello "name" in language
     @GET
     @Path("{locale}/{name}")
-    public String getHelloNameForLocale(@PathParam("name") String name, @PathParam("locale") String locale) {
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getHelloNameForLocale(@PathParam("name") String name, @PathParam("locale") String locale) throws Exception {
         String[] locale_parts = locale.split("-");
         Locale newLocale = null;
 
@@ -68,26 +88,19 @@ public class GreeterService {
                 throw GreeterExceptionBundle.EXCEPTIONS.localeNotValid(locale);
         }
 
+        // ======================================================================
+        // The localized name "crashme" is a alos contrived example to demonstrate how to throw
+        // a localized exception with another exception as the cause.
+        if ("crashme".equals(name)) {
+            try {
+                value = 50 / 0;
+            } catch (Exception ex) {
+                throw GreeterExceptionBundle.EXCEPTIONS.thrownOnPurpose(ex);
+            }
+        }
         GreetingMessagesBundle messages = Messages.getBundle(GreetingMessagesBundle.class, newLocale);
         GreeterLogger.LOGGER.logHelloMessageSentForLocale(locale);
         return messages.helloToYou(name);
-    }
-
-    // ======================================================================
-    // this is a particularly contrived example.  It is here merely to demonstrate
-    // the throwing of a localized exception with another exception as the cause. 
-    @GET
-    @Path("crashme")
-    public String crashMe() throws Exception {
-        int value = 0;
-
-        try {
-            value = 50 / 0;
-        } catch (Exception ex) {
-            throw GreeterExceptionBundle.EXCEPTIONS.thrownOnPurpose(ex);
-        }
-
-        return "value=" + value + " (if you are reading this, then something went wrong!)";
     }
 
 }

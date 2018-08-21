@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+ * Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
  * contributors by the @authors tag. See the copyright.txt in the
  * distribution for a full listing of individual contributors.
  *
@@ -36,9 +36,9 @@ import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * Implementation of parser based on JAXP DOM(W3C).
- * 
+ *
  * @author baranowb
- * 
+ *
  */
 @RequestScoped
 @Alternative
@@ -76,7 +76,8 @@ public class SAXXMLParser extends XMLParser {
 
         @Override
         public void startDocument() throws SAXException {
-            this.catalog = new ArrayList<Book>();
+            System.out.println("Parsing the document using the SAXXMLParser!");
+            this.catalog = new ArrayList<>();
             this.book = null;
             super.startDocument();
         }

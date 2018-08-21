@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+ * Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
  * contributors by the @authors tag. See the copyright.txt in the
  * distribution for a full listing of individual contributors.
  *
@@ -30,16 +30,18 @@ public class EJBUserDao implements UserDao {
     @Inject
     private EntityManager entityManager;
 
+    @Override
     public User getForUsername(String username) {
         try {
-            Query query = entityManager.createQuery("select u from User u where u.username = ?");
-            query.setParameter(1, username);
+            Query query = entityManager.createQuery("select u from User u where u.username = :username");
+            query.setParameter("username", username);
             return (User) query.getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
     }
 
+    @Override
     public void createUser(User user) {
         entityManager.persist(user);
     }

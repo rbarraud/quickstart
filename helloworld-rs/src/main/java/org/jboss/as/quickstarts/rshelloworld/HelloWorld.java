@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+ * Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
  * contributors by the @authors tag. See the copyright.txt in the
  * distribution for a full listing of individual contributors.
  *
@@ -17,21 +17,16 @@
 package org.jboss.as.quickstarts.rshelloworld;
 
 import javax.inject.Inject;
-import javax.json.Json;
-import javax.json.JsonBuilderFactory;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.xml.parsers.DocumentBuilder;
 
 /**
  * A simple REST service which is able to say hello to someone using HelloService Please take a look at the web.xml where JAX-RS
  * is enabled
- * 
+ *
  * @author gbrey@redhat.com
- * 
+ *
  */
 
 @Path("/")
@@ -40,16 +35,14 @@ public class HelloWorld {
     HelloService helloService;
 
     @GET
-    @Path("/")
+    @Path("/json")
     @Produces({ "application/json" })
-    public JsonObject getHelloWorldJSON() {
-        return Json.createObjectBuilder()
-                .add("result", helloService.createHelloMessage("World"))
-                .build();
+    public String getHelloWorldJSON() {
+        return "{\"result\":\"" + helloService.createHelloMessage("World") + "\"}";
     }
 
     @GET
-    @Path("/")
+    @Path("/xml")
     @Produces({ "application/xml" })
     public String getHelloWorldXML() {
         return "<xml><result>" + helloService.createHelloMessage("World") + "</result></xml>";

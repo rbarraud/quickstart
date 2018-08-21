@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+ * Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
  * contributors by the @authors tag. See the copyright.txt in the
  * distribution for a full listing of individual contributors.
  *
@@ -28,7 +28,7 @@ import javax.servlet.annotation.WebListener;
  * <p>
  * Because Request Listeners see requests before Filters see them, this listener sees the original parameter values as sent by
  * the user rather than the modified ones passed down the filter chain by {@link VowelRemoverFilter}.
- * 
+ *
  * @author Jonathan Fuerth <jfuerth@redhat.com>
  */
 @WebListener
@@ -39,9 +39,9 @@ public class ParameterDumpingRequestListener implements ServletRequestListener {
         Map<String, String[]> paramMap = sre.getServletRequest().getParameterMap();
         ServletContext servletContext = sre.getServletContext();
 
-        // to see log messages at runtime, check the terminal window where you started WildFly.
+        // to see log messages at runtime, check the terminal window where you started JBoss EAP.
         servletContext.log("ParameterDumpingRequestListener: request has been initialized. It has " + paramMap.size()
-                + " parameters:");
+            + " parameters:");
         for (Map.Entry<String, String[]> entry : paramMap.entrySet()) {
             for (String val : entry.getValue()) {
                 servletContext.log("  " + entry.getKey() + "=" + val);

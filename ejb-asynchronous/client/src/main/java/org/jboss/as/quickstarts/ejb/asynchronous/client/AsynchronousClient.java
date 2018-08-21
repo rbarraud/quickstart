@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+ * Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
  * contributors by the @authors tag. See the copyright.txt in the
  * distribution for a full listing of individual contributors.
  *
@@ -33,8 +33,8 @@ import org.jboss.as.quickstarts.ejb.asynchronous.AsynchronousAccess;
 import org.jboss.as.quickstarts.ejb.asynchronous.ParallelAccess;
 
 /**
- * A client to call the SingletonService via EJB remoting (WildFly) to demonstrate the behaviour of asynchronous invocations.
- * 
+ * A client to call the SingletonService via EJB remoting to demonstrate the behaviour of asynchronous invocations.
+ *
  * @author <a href="mailto:wfink@redhat.com">Wolf-Dieter Fink</a>
  */
 public class AsynchronousClient {
@@ -51,38 +51,37 @@ public class AsynchronousClient {
     /**
      * Constructor to prepare the client-context.<br/>
      * There must be a jboss-ejb-client.properties file in the classpath to specify the server connection(s).
-     * 
+     *
      * @throws NamingException
      */
     private AsynchronousClient() throws NamingException {
-        final Hashtable<String, String> jndiProperties = new Hashtable<String, String>();
+        final Hashtable<String, String> jndiProperties = new Hashtable<>();
         jndiProperties.put(Context.URL_PKG_PREFIXES, "org.jboss.ejb.client.naming");
         final Context context = new InitialContext(jndiProperties);
-        String lookupName = "ejb:/wildfly-ejb-asynchronous-ejb/AsynchronousAccessBean!" + AsynchronousAccess.class.getName();
+        String lookupName = "ejb:/ejb-asynchronous-ejb/AsynchronousAccessBean!" + AsynchronousAccess.class.getName();
         LOGGER.info("Lookup Bean >" + lookupName);
         accessBean = (AsynchronousAccess) context.lookup(lookupName);
-        lookupName = "ejb:/wildfly-ejb-asynchronous-ejb/ParallelAccessBean!" + ParallelAccess.class.getName();
+        lookupName = "ejb:/ejb-asynchronous-ejb/ParallelAccessBean!" + ParallelAccess.class.getName();
         LOGGER.info("Lookup Bean >" + lookupName);
         parallelBean = (ParallelAccess) context.lookup(lookupName);
     }
 
     /**
      * Demonstrate a fire-and-forget call to an asynchronous bean.
-     * 
+     *
      * @throws InterruptedException
      */
     private void fireAndForget() throws InterruptedException {
         long sleepMillis = 15000;
         accessBean.fireAndForget(sleepMillis);
-        LOGGER.info(String.format("The server log should contain a message at (about) %s, indicating that the call to the asynchronous bean completed.", new Date(new Date().getTime() + sleepMillis)));
-        // in AS7.1.1.Final there is a bug that an ERROR will be logged that the result can not be written
-        // it will be solved in a later version
+        LOGGER.info(String.format("The server log should contain a message at (about) %s, indicating that the call to the asynchronous bean completed.",
+            new Date(new Date().getTime() + sleepMillis)));
     }
 
     /**
      * Demonstrate how to call an asynchronous EJB, and then perform another task whilst waiting for the result.
      * If the result is not present after the timeout of get(<timeout>) the result will be ignored.
-     * 
+     *
      * @throws TimeoutException Will be thrown if you change the timing
      */
     private void getResultAsync() throws InterruptedException, ExecutionException, TimeoutException {
@@ -103,7 +102,7 @@ public class AsynchronousClient {
     private void waitForAsyncResult() throws InterruptedException, ExecutionException, TimeoutException {
         Future<String> myResult = accessBean.longerRunning(1500); // Start a call with a short duration
         // you might do something here
-        
+
         // get() without a timeout will wait until the remote result is present.
         LOGGER.info("Got the async result as expected after wait => " + myResult.get());
     }
@@ -141,8 +140,7 @@ public class AsynchronousClient {
                 // This is the expected behavior
                 LOGGER.info("Catch the expected Exception of the asynchronous execution!");
             } else if (e.getCause().getCause() instanceof IllegalAccessException) {
-                // For releases < AS7.1.2 (EAP6.0.0) the Exception is covered by a second ExecutionException because of a bug 
-                LOGGER.info("Catch the covered Exception of the asynchronous execution, you may be using a release <= AS7.1.2 or EAP6.0.0!");
+                LOGGER.info("Catch the covered Exception of the asynchronous execution, you may be using an older release of JBoss EAP!");
             } else {
                 throw new RuntimeException("Unexpected ExecutionException during asynchronous call!", e);
             }
@@ -151,7 +149,7 @@ public class AsynchronousClient {
 
     /**
      * Call all the different asynchronous methods.
-     * 
+     *
      * @param args no arguments needed
      */
     public static void main(String[] args) throws Exception {

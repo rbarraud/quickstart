@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--
     JBoss, Home of Professional Open Source
-    Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+    Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
     contributors by the @authors tag. See the copyright.txt in the
     distribution for a full listing of individual contributors.
 
@@ -15,34 +15,24 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>org.wildfly.quickstarts</groupId>
         <artifactId>wildfly-wicket-ear-parent</artifactId>
-        <version>8.0.0-SNAPSHOT</version>
+        <version>14.0.0.CR1-SNAPSHOT</version>
     </parent>
-
     <artifactId>wildfly-wicket-ear-war</artifactId>
     <packaging>war</packaging>
-
-    <name>WildFly Quickstarts: Wicket EAR: WAR</name>
-    <licenses>
-        <license>
-            <name>Apache License, Version 2.0</name>
-            <distribution>repo</distribution>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
-        </license>
-    </licenses>
+    <name>Quickstart: wicket-ear - war</name>
 
     <dependencies>
 
         <!-- Import the JPA API. -->
         <dependency>
-            <groupId>org.hibernate.javax.persistence</groupId>
-            <artifactId>hibernate-jpa-2.1-api</artifactId>
+            <groupId>javax.persistence</groupId>
+            <artifactId>javax.persistence-api</artifactId>
             <scope>provided</scope>
         </dependency>
 
@@ -55,8 +45,8 @@
 
         <!-- Wicket Java EE integration. -->
         <dependency>
-            <groupId>net.ftlines.wicket-cdi</groupId>
-            <artifactId>wicket-cdi</artifactId>
+            <groupId>org.apache.wicket</groupId>
+            <artifactId>wicket-cdi-1.1</artifactId>
         </dependency>
 
         <!-- EJB JAR. -->
@@ -66,10 +56,14 @@
             <type>ejb</type>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.jboss.spec.javax.annotation</groupId>
+            <artifactId>jboss-annotations-api_1.3_spec</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
-        <finalName>${project.artifactId}</finalName>
         <resources>
             <resource>
                 <filtering>false</filtering>
@@ -95,6 +89,19 @@
                 <artifactId>wildfly-maven-plugin</artifactId>
                 <configuration>
                     <skip>true</skip>
+                </configuration>
+            </plugin>
+            <!-- This is workaround for avoiding ClassNotFoundException during deserialization 
+             of Wicket component with @Inject. For more info please see https://issues.jboss.org/browse/WFLY-988 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                           <Dependencies>org.jboss.msc</Dependencies>
+                        </manifestEntries>
+                    </archive>
                 </configuration>
             </plugin>
         </plugins>

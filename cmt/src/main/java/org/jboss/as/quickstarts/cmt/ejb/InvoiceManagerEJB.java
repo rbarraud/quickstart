@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+ * Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
  * contributors by the @authors tag. See the copyright.txt in the
  * distribution for a full listing of individual contributors.
  *
@@ -20,33 +20,24 @@ import javax.annotation.Resource;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
-import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
-import javax.jms.JMSException;
-import javax.jms.MessageProducer;
+import javax.inject.Inject;
+import javax.jms.JMSConnectionFactory;
+import javax.jms.JMSContext;
 import javax.jms.Queue;
-import javax.jms.Session;
-import javax.jms.TextMessage;
 
 @Stateless
 public class InvoiceManagerEJB {
 
-    @Resource(mappedName = "java:/JmsXA")
-    private ConnectionFactory connectionFactory;
+    @Inject
+    @JMSConnectionFactory("java:/JmsXA")
+    private JMSContext jmsContext;
 
-    @Resource(mappedName = "java:/queue/CMTQueue")
+    @Resource(lookup = "java:/queue/CMTQueue")
     private Queue queue;
 
     @TransactionAttribute(TransactionAttributeType.MANDATORY)
-    public void createInvoice(String name) throws JMSException {
-        Connection connection = connectionFactory.createConnection();
-        Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-        MessageProducer messageProducer = session.createProducer(queue);
-        connection.start();
-        TextMessage message = session.createTextMessage();
-        message.setText("Created invoice for customer named: " + name);
-        messageProducer.send(message);
-        connection.close();
-
+    public void createInvoice(String name) {
+        jmsContext.createProducer()
+                .send(queue, "Created invoice for customer named: " + name);
     }
 }

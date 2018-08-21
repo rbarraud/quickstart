@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+ * Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
  * contributors by the @authors tag. See the copyright.txt in the
  * distribution for a full listing of individual contributors.
  *
@@ -17,7 +17,6 @@
 package org.jboss.as.quickstart.hibernate4.model;
 
 import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -33,14 +32,16 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /*The Model uses JPA Entity as well as Hibernate Validators
- * 
+ *
  */
 
 @Entity
 @XmlRootElement
 @Table(name = "MemberHibernate4Demo", uniqueConstraints = @UniqueConstraint(columnNames = "id"))
 public class Member implements Serializable {
-    /** Default value included to remove warning. Remove or modify at will. **/
+    /**
+     * Default value included to remove warning. Remove or modify at will.
+     **/
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -51,7 +52,9 @@ public class Member implements Serializable {
     @Pattern(regexp = "[A-Za-z ]*", message = "must contain only letters and spaces")
     private String name;
 
-    /** using hibernate4 validators **/
+    /**
+     * using hibernate4 validators
+     **/
     @NotNull
     @NotEmpty
     @Email

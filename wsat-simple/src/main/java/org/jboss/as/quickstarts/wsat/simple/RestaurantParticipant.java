@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+ * Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
  * contributors by the @authors tag. See the copyright.txt in the
  * distribution for a full listing of individual contributors.
  *
@@ -16,13 +16,18 @@
  */
 package org.jboss.as.quickstarts.wsat.simple;
 
-import com.arjuna.wst.*;
-
 import java.io.Serializable;
+
+import com.arjuna.wst.Aborted;
+import com.arjuna.wst.Durable2PCParticipant;
+import com.arjuna.wst.Prepared;
+import com.arjuna.wst.SystemException;
+import com.arjuna.wst.Vote;
+import com.arjuna.wst.WrongStateException;
 
 /**
  * An adapter class that exposes the RestaurantManager as a WS-T Atomic Transaction participant.
- * 
+ *
  * @author paul.robinson@redhat.com, 2012-01-04
  */
 public class RestaurantParticipant implements Durable2PCParticipant, Serializable {
@@ -36,7 +41,7 @@ public class RestaurantParticipant implements Durable2PCParticipant, Serializabl
 
     /**
      * Creates a new participant for this transaction. Participants and transaction instances have a one-to-one mapping.
-     * 
+     *
      * @param txID the ID of the transaction tht this participant will be enlisted within.
      */
     public RestaurantParticipant(String txID) {
@@ -45,7 +50,7 @@ public class RestaurantParticipant implements Durable2PCParticipant, Serializabl
 
     /**
      * Invokes the prepare step of the business logic, reporting activity and outcome.
-     * 
+     *
      * @return Prepared where possible, Aborted where necessary.
      * @throws WrongStateException
      * @throws SystemException
@@ -69,7 +74,7 @@ public class RestaurantParticipant implements Durable2PCParticipant, Serializabl
 
     /**
      * Invokes the commit step of the business logic.
-     * 
+     *
      * @throws WrongStateException
      * @throws SystemException
      */
@@ -82,7 +87,7 @@ public class RestaurantParticipant implements Durable2PCParticipant, Serializabl
 
     /**
      * Invokes the rollback operation on the business logic.
-     * 
+     *
      * @throws WrongStateException
      * @throws SystemException
      */

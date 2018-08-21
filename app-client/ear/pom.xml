@@ -1,7 +1,7 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
     JBoss, Home of Professional Open Source
-    Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+    Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
     contributors by the @authors tag. See the copyright.txt in the
     distribution for a full listing of individual contributors.
 
@@ -15,47 +15,42 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.jboss.quickstarts.eap</groupId>
-        <artifactId>jboss-application-client</artifactId>
-        <version>6.2.0-redhat-SNAPSHOT</version>
+        <groupId>org.wildfly.quickstarts</groupId>
+        <artifactId>app-client</artifactId>
+        <version>14.0.0.CR1-SNAPSHOT</version>
     </parent>
-    <artifactId>jboss-application-client-ear</artifactId>
+    <artifactId>app-client-ear</artifactId>
     <packaging>ear</packaging>
-    <name>JBoss EAP Quickstart: applicationclient - server - app - ear</name>
-    <description>Create the deployable application archive
-     Include the EJB and client application together with the necessary API libraries
-  </description>
+    <name>Quickstart: app-client - ear</name>
+    <description>This project demonstrates how to package and use an EE application client. 
+      This is the EAR POM file, which creates the deployable application archive by 
+     including the EJB and client application together with the necessary API libraries.</description>
+
     <licenses>
         <license>
             <name>Apache License, Version 2.0</name>
-            <distribution>repo</distribution>
             <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+            <distribution>repo</distribution>
         </license>
     </licenses>
+
     <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>app-client-client-simple</artifactId>
+            <version>${project.version}</version>
+            <type>app-client</type>
+        </dependency>
         <!-- add the EJB and WEB project as dependency to include it in the EAR -->
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>jboss-application-client-ejb</artifactId>
-            <type>ejb</type>
+            <artifactId>app-client-ejb</artifactId>
             <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jboss.as</groupId>
-            <artifactId>jboss-as-ejb-client-bom</artifactId>
-            <scope>provided</scope>
-            <type>pom</type>
-        </dependency>
-        <dependency>
-          <groupId>${project.groupId}</groupId>
-          <artifactId>jboss-application-client-acc-simple</artifactId>
-          <version>${project.version}</version>
-          <type>app-client</type>
+            <type>ejb</type>
         </dependency>
     </dependencies>
 
@@ -66,25 +61,25 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-acr-plugin</artifactId>
-                <version>1.0</version>
+                <version>3.0.0</version>
                 <extensions>true</extensions>
             </plugin>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-ear-plugin</artifactId>
-                <version>${ear.plugin.version}</version>
                 <configuration>
                     <displayName>SimpleApplicationForApplicationClient</displayName>
-                    <version>6</version>
+                    <version>7</version>
                     <generateApplicationXml>true</generateApplicationXml>
                     <modules>
                         <ejbModule>
                             <groupId>${project.groupId}</groupId>
-                            <artifactId>jboss-application-client-ejb</artifactId>
+                            <artifactId>app-client-ejb</artifactId>
                             <bundleFileName>ejb.jar</bundleFileName>
                         </ejbModule>
                         <appClientModule>
                             <groupId>${project.groupId}</groupId>
-                            <artifactId>jboss-application-client-acc-simple</artifactId>
+                            <artifactId>app-client-client-simple</artifactId>
                             <bundleFileName>simpleClient.jar</bundleFileName>
                         </appClientModule>
                     </modules>
@@ -93,11 +88,10 @@
                     </archive>
                 </configuration>
             </plugin>
-            <!-- JBoss AS plugin to deploy ear -->
+            <!-- WildFly plug-in to deploy ear -->
             <plugin>
-                <groupId>org.jboss.as.plugins</groupId>
-                <artifactId>jboss-as-maven-plugin</artifactId>
-                <version>${version.jboss.maven.plugin}</version>
+                <groupId>org.wildfly.plugins</groupId>
+                <artifactId>wildfly-maven-plugin</artifactId>
                 <configuration>
                     <skip>false</skip>
                 </configuration>

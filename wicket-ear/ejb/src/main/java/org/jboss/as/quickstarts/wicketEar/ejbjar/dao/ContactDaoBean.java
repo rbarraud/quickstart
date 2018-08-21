@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+ * Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
  * contributors by the @authors tag. See the copyright.txt in the
  * distribution for a full listing of individual contributors.
  *
@@ -59,8 +59,8 @@ public class ContactDaoBean implements ContactDao {
      * Remove a Contact.
      */
     @Override
-    public void remove(Contact modelObject) {
-        Contact managed = em.merge(modelObject);
+    public void remove(Long id) {
+        Contact managed = em.find(Contact.class, id);
         em.remove(managed);
         em.flush();
     }

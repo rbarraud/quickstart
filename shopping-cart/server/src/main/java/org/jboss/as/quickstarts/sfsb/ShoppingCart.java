@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+ * Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
  * contributors by the @authors tag. See the copyright.txt in the
  * distribution for a full listing of individual contributors.
  *
@@ -16,8 +16,7 @@
  */
 package org.jboss.as.quickstarts.sfsb;
 
-import java.util.HashMap;
-
+import java.util.Map;
 import javax.ejb.Remote;
 
 /**
@@ -25,9 +24,9 @@ import javax.ejb.Remote;
  */
 @Remote
 public interface ShoppingCart {
-    public void buy(String product, int quantity);
+    void buy(String product, int quantity);
 
-    public void checkout();
+    void checkout();
 
-    public HashMap<String, Integer> getCartContents();
+    Map<String, Integer> getCartContents();
 }

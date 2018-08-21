@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+ * Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
  * contributors by the @authors tag. See the copyright.txt in the
  * distribution for a full listing of individual contributors.
  *
@@ -16,20 +16,26 @@
  */
 package org.jboss.as.quickstarts.wicketEar.war.pages;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import javax.annotation.Resource;
 import javax.inject.Inject;
 
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.repeater.Item;
+import org.apache.wicket.markup.repeater.RefreshingView;
+import org.apache.wicket.model.IModel;
+import org.apache.wicket.model.Model;
 import org.jboss.as.quickstarts.wicketEar.ejbjar.dao.ContactDao;
 import org.jboss.as.quickstarts.wicketEar.ejbjar.model.Contact;
 
 /**
  * Dynamic behavior for the ListContact page
- * 
+ *
  * @author Filippo Diotalevi
  */
 @SuppressWarnings("serial")
@@ -47,21 +53,30 @@ public class ListContacts extends WebPage {
 
         // Add the dynamic welcome message, specified in web.xml
         add(new Label("welcomeMessage", welcome));
-        
+
         // Populate the table of contacts
-        add(new ListView<Contact>("contacts", contactDao.getContacts()) {
+        add(new RefreshingView<ContactDto>("contacts") {
 
             @Override
-            protected void populateItem(final ListItem<Contact> item) {
-                Contact contact = item.getModelObject();
+            protected Iterator<IModel<ContactDto>> getItemModels() {
+                List<IModel<ContactDto>> models = new ArrayList<>();
+                for (Contact contact : contactDao.getContacts()) {
+                    models.add(Model.of(new ContactDto(contact)));
+                }
+                return models.iterator();
+            }
+
+            @Override
+            protected void populateItem(final Item<ContactDto> item) {
+                ContactDto contact = item.getModelObject();
                 item.add(new Label("name", contact.getName()));
                 item.add(new Label("email", contact.getEmail()));
-                item.add(new Link<Contact>("delete", item.getModel()) {
+                item.add(new Link<ContactDto>("delete", item.getModel()) {
 
                     // Add a click handler
                     @Override
                     public void onClick() {
-                        contactDao.remove(item.getModelObject());
+                        contactDao.remove(item.getModelObject().getId());
                         setResponsePage(ListContacts.class);
                     }
                 });
@@ -69,4 +84,34 @@ public class ListContacts extends WebPage {
         });
     }
 
+    /**
+     * This class is detached version of {@link Contact} and it's purpose is to
+     * avoid detachable model in order not to complicate this example.
+     * <p>
+     * For more information please see
+     * https://ci.apache.org/projects/wicket/guide/7.x/guide/modelsforms.html#modelsforms_6
+     */
+    private static class ContactDto implements Serializable {
+        private final Long id;
+        private final String name;
+        private final String email;
+
+        ContactDto(Contact contact) {
+            this.id = contact.getId();
+            this.name = contact.getName();
+            this.email = contact.getEmail();
+        }
+
+        public Long getId() {
+            return id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getEmail() {
+            return email;
+        }
+    }
 }

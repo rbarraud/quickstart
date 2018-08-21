@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+ * Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
  * contributors by the @authors tag. See the copyright.txt in the
  * distribution for a full listing of individual contributors.
  *
@@ -16,8 +16,8 @@
  */
 package org.jboss.as.quickstarts.jms;
 
-import java.util.Properties;
 import java.util.logging.Logger;
+import java.util.Properties;
 
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
@@ -37,7 +37,7 @@ public class HelloWorldJMSClient {
     private static final String DEFAULT_MESSAGE_COUNT = "1";
     private static final String DEFAULT_USERNAME = "quickstartUser";
     private static final String DEFAULT_PASSWORD = "quickstartPwd1!";
-    private static final String INITIAL_CONTEXT_FACTORY = "org.jboss.naming.remote.client.InitialContextFactory";
+    private static final String INITIAL_CONTEXT_FACTORY = "org.wildfly.naming.client.WildFlyInitialContextFactory";
     private static final String PROVIDER_URL = "http-remoting://127.0.0.1:8080";
 
     public static void main(String[] args) {
@@ -98,4 +98,3 @@ public class HelloWorldJMSClient {
         }
     }
 }
-

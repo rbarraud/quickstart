@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+ * Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
  * contributors by the @authors tag. See the copyright.txt in the
  * distribution for a full listing of individual contributors.
  *
@@ -20,6 +20,8 @@ import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateful;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.enterprise.event.Event;
 import javax.enterprise.inject.Model;
 import javax.enterprise.inject.Produces;
@@ -34,7 +36,7 @@ import org.jboss.as.quickstarts.kitchensinkjsp.model.Member;
 // The @Model stereotype is a convenience mechanism to make this a request-scoped bean that has an
 // EL name
 // Read more about the @Model stereotype in this FAQ:
-// http://sfwk.org/Documentation/WhatIsThePurposeOfTheModelAnnotation
+// http://www.cdi-spec.org/faq/#accordion6
 @Model
 public class MemberRegistration {
 
@@ -78,6 +80,7 @@ public class MemberRegistration {
     }
 
     @PostConstruct
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public void initNewMember() {
         newMember = new Member();
         log.info("@PostConstruct:initNewMember called");

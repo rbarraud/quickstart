@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+ * Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
  * contributors by the @authors tag. See the copyright.txt in the
  * distribution for a full listing of individual contributors.
  *
@@ -33,9 +33,9 @@ import javax.xml.validation.Validator;
 /**
  * Simple class to provide base for XML file parsing. It will validate any document using the schema produced by
  * {@link Constants}
- * 
+ *
  * @author baranowb
- * 
+ *
  */
 public abstract class XMLParser {
 
@@ -46,7 +46,7 @@ public abstract class XMLParser {
         /*
          * Validate against schema before it triggers implementation.
          */
-        StringBuffer xmlFile = new StringBuffer();
+        StringBuilder xmlFile = new StringBuilder();
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
         String line = null;
         while ((line = bufferedReader.readLine()) != null) {
@@ -57,7 +57,7 @@ public abstract class XMLParser {
         try {
             URL schema = Resources.getResource("/catalog.xsd");
             Validator validator = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema").newSchema(schema)
-                    .newValidator();
+                .newValidator();
             Source source = new StreamSource(new CharArrayReader(xml.toCharArray()));
             validator.validate(source);
         } catch (Exception e) {
@@ -71,7 +71,7 @@ public abstract class XMLParser {
     }
 
     /**
-     * 
+     *
      * @param is
      * @return
      * @throws Exception

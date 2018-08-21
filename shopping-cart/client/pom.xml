@@ -1,7 +1,7 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
     JBoss, Home of Professional Open Source
-    Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+    Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
     contributors by the @authors tag. See the copyright.txt in the
     distribution for a full listing of individual contributors.
 
@@ -15,46 +15,46 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>org.wildfly.quickstarts</groupId>
-        <artifactId>wildfly-shoppingcart-parent</artifactId>
-        <version>8.0.0-SNAPSHOT</version>
+        <artifactId>shopping-cart</artifactId>
+        <version>14.0.0.CR1-SNAPSHOT</version>
     </parent>
-
-    <artifactId>wildfly-shoppingcart-client</artifactId>
+    <artifactId>shopping-cart-client</artifactId>
     <packaging>jar</packaging>
-    <name>WildFly Quickstarts: Shopping Cart Remote Client</name>
+    <name>Quickstart: shopping-cart - client</name>
+    <description>This project demonstrates a shopping cart that uses a Stateful Session Bean; this is the client POM file</description>
 
     <licenses>
         <license>
             <name>Apache License, Version 2.0</name>
-            <distribution>repo</distribution>
             <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+            <distribution>repo</distribution>
         </license>
     </licenses>
 
     <dependencies>
 
-        <!-- We depend on the server side EJBs of this application -->
-        <dependency>
-            <groupId>org.wildfly.quickstarts</groupId>
-            <artifactId>wildfly-shoppingcart-server</artifactId>
-        </dependency>
-
-        <!-- JBoss EJB client stack. We use runtime scope because the EJB 
-            client API isn't directly used in this example. We just need it in our runtime 
+        <!-- JBoss EJB client stack. We use runtime scope because the EJB
+            client API isn't directly used in this example. We just need it in our runtime
             classpath -->
         <dependency>
             <groupId>org.wildfly</groupId>
             <artifactId>wildfly-ejb-client-bom</artifactId>
-            <scope>runtime</scope>
             <type>pom</type>
+            <scope>runtime</scope>
         </dependency>
-        
+
+        <!-- We depend on the server side EJBs of this application -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>shopping-cart-server</artifactId>
+            <type>ejb</type>
+        </dependency>
+
         <!--  Import the Java EJB API, as we use exceptions from it -->
         <dependency>
             <groupId>org.jboss.spec.javax.ejb</groupId>
@@ -66,22 +66,11 @@
     <build>
         <finalName>${project.artifactId}</finalName>
         <plugins>
-            <!-- Enforce Java 1.6 -->
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${version.compiler.plugin}</version>
-                <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.target}</target>
-                </configuration>
-            </plugin>
-
-            <!-- Add the maven exec plugin to allow us to run a java program 
+            <!-- Add the maven exec plug-in to allow us to run a java program
                 via maven -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
-                <version>${version.exec.plugin}</version>
                 <configuration>
                     <mainClass>org.jboss.as.quickstarts.client.Client</mainClass>
                 </configuration>

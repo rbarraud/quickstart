@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2013, Red Hat, Inc. and/or its affiliates, and individual
+ * Copyright 2015, Red Hat, Inc. and/or its affiliates, and individual
  * contributors by the @authors tag. See the copyright.txt in the
  * distribution for a full listing of individual contributors.
  *
@@ -17,7 +17,6 @@
 package org.jboss.as.quickstart.hibernate4.util;
 
 import java.util.logging.Logger;
-
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
@@ -27,11 +26,11 @@ import javax.persistence.PersistenceContext;
 
 /**
  * This class uses CDI to alias Java EE resources, such as the persistence context, to CDI beans
- * 
+ * <p>
  * <p>
  * Example injection on a managed bean field:
  * </p>
- * 
+ * <p>
  * <pre>
  * &#064;Inject
  * private EntityManager em;
